@@ -8,9 +8,6 @@
 using namespace std;
 
 uint32_t hashvalue[5];
-BigNumber P;
-BigNumber Q;
-BigNumber G;
 
 int main(int argc,char**argv) {
 	BigNumber P, Q,G,X,Y,H;
@@ -18,27 +15,59 @@ int main(int argc,char**argv) {
 	while (1) {
 		/*此处为实现方便，H的长度可以任意H的值但要小于p-1*/
 		H.generateNumber(DSALENGTH-1);
+		//H.unsignedprintBigNumber();
 		G = H.bigNumMod((P - BigNumber(1)) / Q, P);
-		if (!G.unsignedisEqual(G, BigNumber(1)))break;
+		G.unsignedprintBigNumber();
+		if (G.isBig(G, BigNumber(1)))break;
 	}
 
 	/*随机选取一个160位的x,x的值要小于q*/
 	while (1) {
-		X.generateNumber(SLENGTH);
+		X.generateNumber(SLENGTH-1);
+		X.unsignedprintBigNumber();
 		if (X.isBig(Q, X))break;
 	}
 	Y = G.bigNumMod(X, P);
 
 	BigNumber text(1);
 	BigNumber shatext = shaBigNumber(text);
-	
+	cout << "初始化完毕:  " << endl;
+	cout << "P: ";
+	P.unsignedprintBigNumber();
+	cout << "Q: ";
+	Q.unsignedprintBigNumber();
+	cout << "G: ";
+	G.unsignedprintBigNumber();
+	cout << "Y: ";
+	Y.unsignedprintBigNumber();
+	cout << "以上为公开的，其中Y为公开密钥 ,并已经写入文件\"public.txt\"" << endl;
+	fstream file;
+	file.open("public.txt",ios::out);
+	if (file.fail()) {
+		cout << "文件写入失败" << endl;
+		exit(0);
+	}
+	P.writeBigNumbertofile(&file,4,P,Q,G,Y);
+	file.close();
+	file.open("private.txt",ios::out);
+	if (file.fail()) {
+		cout << "文件写入失败" << endl;
+		exit(0);
+	}
+	cout << "X";
+	X.unsignedprintBigNumber();
+	cout << "X为你的私钥，不公开，并已经写入文件\"private.txt\"" << endl;
+	X.writeBigNumbertofile(&file,1,X);
+	file.close();
 	/*******************签名操作***********************/
 
 	BigNumber R, K, S,IK;
 	/*产生一个小于q的随机数k*/
 	K.generateNumber(100);
 	/*计算K的逆元*/
-	IK = IK.inverseBigNumber(K);
+	IK = K.inverseBigNumber(Q);
+	cout << "IK: ";
+	IK.unsignedprintBigNumber();
 	BigNumber tmp = G.bigNumMod(K, P);
 	R = tmp.bigNumMod(BigNumber(1), Q);
 	tmp = IK * (shatext + (X*R));
@@ -51,13 +80,13 @@ int main(int argc,char**argv) {
 
 	BigNumber W, U1, U2, V;
 	/*计算S的逆元W*/
-	W = W.inverseBigNumber(S);
+	W = S.inverseBigNumber(Q);
 	tmp = shatext * W;
 	U1 = tmp.bigNumMod(BigNumber(1), Q);
 	tmp = R * W;
 	U2 = tmp.bigNumMod(BigNumber(1), Q);
-	tmp = G.powerBigNumber(G, U1);
-	tmp = tmp * Y.powerBigNumber(Y, U2);
+	tmp = G.bigNumMod(U1, P);
+	tmp = tmp * Y.bigNumMod(U2, P);
 	tmp = tmp.bigNumMod(BigNumber(1), P);
 	V = tmp.bigNumMod(BigNumber(1), Q);
 	if (V.unsignedisEqual(V, R)) {
@@ -66,7 +95,6 @@ int main(int argc,char**argv) {
 	else {
 		cout << "签名无效" << endl;
 	}
-
 
 	//BigNumber a(2);
 	//BigNumber b(500);

@@ -2,9 +2,10 @@
 #include<iostream>
 #include<string>
 #include<stack>
+#include<stdarg.h>
 #include"sha.h"
 #define MAXLENGTH 128   //二进制的大整数最大长度
-#define DSALENGTH 512	//DSA签名中素数p的长度
+#define DSALENGTH 1024	//DSA签名中素数p的长度
 #define SLENGTH 160		//DSA生成中任意序列S的长度，最小为160
 
 
@@ -83,6 +84,9 @@ public:
 	 BigNumber powerBigNumber(BigNumber a,BigNumber b);
 
 	 /*随机返回一个n位的随机大整数*/
-	 BigNumber generateNumber(uint32_t n);
+	 void generateNumber(uint32_t n);
+
+	 /*将大整数写入文件，接受可变参数,出错时返回0*/
+	 int writeBigNumbertofile(std::fstream* ,int n,...);
 }; 
 

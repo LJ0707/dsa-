@@ -1,15 +1,17 @@
-﻿  main.cpp
-  BigNumber.cpp
-e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(85): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(561): warning C4244: “初始化”: 从“double”转换到“uint32_t”，可能丢失数据
-e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(569): warning C4018: “<”: 有符号/无符号不匹配
-e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(594): warning C4018: “<”: 有符号/无符号不匹配
-e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(605): warning C4018: “<”: 有符号/无符号不匹配
-e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(623): warning C4018: “<”: 有符号/无符号不匹配
-e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(625): warning C4018: “<=”: 有符号/无符号不匹配
-e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(632): warning C4018: “<”: 有符号/无符号不匹配
-e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(661): warning C4018: “<”: 有符号/无符号不匹配
+﻿  BigNumber.cpp
+e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(86): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(562): warning C4244: “初始化”: 从“double”转换到“uint32_t”，可能丢失数据
+e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(570): warning C4018: “<”: 有符号/无符号不匹配
+e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(595): warning C4018: “<”: 有符号/无符号不匹配
+e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(606): warning C4018: “<”: 有符号/无符号不匹配
+e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(624): warning C4018: “<”: 有符号/无符号不匹配
+e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(626): warning C4018: “<=”: 有符号/无符号不匹配
+e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(633): warning C4018: “<”: 有符号/无符号不匹配
+e:\大三上\密码学\密码学实验\dsa1\dsa\bignumber.cpp(662): warning C4018: “<”: 有符号/无符号不匹配
   正在生成代码...
-  正在跳过...(未检测到相关更改)
+  正在编译...
   sha.cpp
+e:\大三上\密码学\密码学实验\dsa1\dsa\sha.cpp(23): warning C4309: “=”: 截断常量值
+  main.cpp
+  正在生成代码...
   dsa.vcxproj -> E:\大三上\密码学\密码学实验\dsa1\x64\Debug\dsa.exe

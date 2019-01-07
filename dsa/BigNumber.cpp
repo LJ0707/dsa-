@@ -4,6 +4,7 @@
 #include<cmath>
 #include<ctime>
 #include<random>
+#include<stdarg.h>
 #include"sha.h"
 #include"BigNumber.h"
 
@@ -653,11 +654,27 @@ int BigNumber::Miller_Rabin() {
 }
 
  /*随机返回一个n位的随机大整数*/
- BigNumber BigNumber::generateNumber(uint32_t n) {
+ void BigNumber::generateNumber(uint32_t n) {
 	 std::string s;
 	 s.resize(n);
 	 srand(uint32_t(time(0)));
 	 s[0] = '1';
 	 for (int i = 1; i < n; i++)s[i] = char(rand() % 2) + '0';
-	 return BigNumber(s, 2);
+	 BigNumber result(s,2);
+	 *this = result;
+ }
+
+ /*将大整数写入文件，接受可变参数,出错时返回0*/
+ int BigNumber::writeBigNumbertofile(std::fstream*file, int n, ...) {
+	 std::string s;
+	 va_list list;
+	 va_start(list,n);
+	 BigNumber tmp;
+	 for (int i = 0; i < n;i++) {
+		 tmp = va_arg(list,BigNumber);
+		 s = tmp.BigNumberToString();
+		 *file << s << std::endl;
+	 }
+	 va_end(list);
+	 return 1;
  }
