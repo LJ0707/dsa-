@@ -81,5 +81,8 @@ public:
 
 	 /*计算a^b*/
 	 BigNumber powerBigNumber(BigNumber a,BigNumber b);
+
+	 /*随机返回一个n位的随机大整数*/
+	 BigNumber generateNumber(uint32_t n);
 }; 
 

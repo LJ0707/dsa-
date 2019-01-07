@@ -581,6 +581,7 @@ int BigNumber::Miller_Rabin() {
 
  void BigNumber::generateDsaprimenumber(BigNumber&P, BigNumber&Q) {
 	 uint32_t L = DSALENGTH;
+	 bool flag = 0;
 	 uint32_t B = (L - 1) % 160;
 	 uint32_t n = (L - 1) / 160;
 	 std::string s;
@@ -591,7 +592,7 @@ int BigNumber::Miller_Rabin() {
 	 sg.resize(G);
 	 sg[0] = '1';
 	 for (int i = 1; i < G; i++) sg[i] = '0';
-	 NG = BigNumber(sg, 2);				//吃实话NG\
+	 NG = BigNumber(sg, 2);				//初始化NG
 	 
 	 NB = BigNumber::powerBigNumber(NUMS[2], B);
 	 NL = BigNumber::powerBigNumber(NUMS[2],BigNumber(L-1));
@@ -599,41 +600,64 @@ int BigNumber::Miller_Rabin() {
 	 std::default_random_engine e;
 	 std::uniform_int_distribution<unsigned> u(0, 1);
 	 while (1) {
-		 s[0] = '1';
-		 for (int i = 1; i < G; i++) s[i] = char(u(e)) + '0';
-		 S=BigNumber(s, 2);
-		 BigNumber tmp = S + one;
+		 while (1) {
+			 s[0] = '1';
+			 for (int i = 1; i < G; i++) s[i] = char(u(e)) + '0';
+			 S = BigNumber(s, 2);
+			 BigNumber tmp = S + one;
 
+			 /*这里U为一个160位的大整数*/
+			 BigNumber U = shaBigNumber(S) ^ shaBigNumber(tmp.bigNumMod(one, NG));
+			 U.number[0] = U.number[0] | 0x00000001;
+			 U.number[4] = U.number[4] | 0x10000000;
+			 U.unsignedprintBigNumber();
 
-		 
+			 Q = U;
+			 if (Q.Miller_Rabin())break;
 
-		 /*这里U为一个160位的大整数*/
-		 BigNumber U = shaBigNumber(S) ^ shaBigNumber(tmp.bigNumMod(one, NG));
-		 U.number[0] = U.number[0] | 0x00000001;
-		 U.number[4] = U.number[4] | 0x10000000;
-		 U.unsignedprintBigNumber();
+		 }
 
-		 Q = U;
-		 if (Q.Miller_Rabin())break;
+		 uint32_t C = 0;
+		 uint32_t N = 2;
+		 BigNumber *V = new BigNumber[n + 1];
+		 for (int i = 0; i < n + 1; i++) V[i] = BigNumber(0);
+		 while (C != 4096) {
+			 for (int k = 0; k <= n; k++) {
+				 BigNumber tmp = (S + BigNumber(N) + BigNumber(k));
+				 V[k] = shaBigNumber(tmp.bigNumMod(one, NG));
+			//	 V[k].unsignedprintBigNumber();
+			 }
 
+			 BigNumber W = V[0];
+			 for (int k = 1; k < n; k++) {
+				 W = W + W.powerBigNumber(NUMS[2], BigNumber(160 * k))*V[k];
+			 }
+			 W = W + W.powerBigNumber(NUMS[2], BigNumber(160 * n))*V[n].bigNumMod(one, NB);
+
+			 X = W + NL;
+			 P = X - (X.bigNumMod(one, NUMS[2] * Q)) + one;
+			 P.unsignedprintBigNumber();
+			 if (!BigNumber::isBig(NL, P)) {
+				 if (P.Miller_Rabin()) {
+					 flag = 1;
+					 break;
+				 }
+			 }
+			 C = C + 1;
+			 N = N + 2;
+		 }
+		 if (flag) break;
 	 }
-	 uint32_t C = 0;
-	 uint32_t N = 2;
-
-	 BigNumber *V = new BigNumber[n + 1];
-	 for (int k = 0; k <= n; k++) {
-		 BigNumber tmp = (S + BigNumber(N) + BigNumber(k));
-		V[k] = shaBigNumber(tmp.bigNumMod(one, NG));
-	 }
-
-	 BigNumber W = V[0];
-	 for (int k = 1; k < n; k++) {
-		 W = W + W.powerBigNumber(NUMS[2], BigNumber(160 * k))*V[k];
-	 }
-	 W = W + W.powerBigNumber(NUMS[2], BigNumber(160 * n))*V[n].bigNumMod(one, NB);
-
-	 X = W + NL;
-	 P = X - (X.bigNumMod(one, NUMS[2] * Q)) + one;
 	 P.unsignedprintBigNumber();
 	 Q.unsignedprintBigNumber();
 }
+
+ /*随机返回一个n位的随机大整数*/
+ BigNumber BigNumber::generateNumber(uint32_t n) {
+	 std::string s;
+	 s.resize(n);
+	 srand(uint32_t(time(0)));
+	 s[0] = '1';
+	 for (int i = 1; i < n; i++)s[i] = char(rand() % 2) + '0';
+	 return BigNumber(s, 2);
+ }
