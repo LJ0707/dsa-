@@ -611,7 +611,7 @@ int BigNumber::Miller_Rabin() {
 			 BigNumber U = shaBigNumber(S) ^ shaBigNumber(tmp.bigNumMod(one, NG));
 			 U.number[0] = U.number[0] | 0x00000001;
 			 U.number[4] = U.number[4] | 0x10000000;
-			 U.unsignedprintBigNumber();
+			// U.unsignedprintBigNumber();
 
 			 Q = U;
 			 if (Q.Miller_Rabin())break;
@@ -637,7 +637,7 @@ int BigNumber::Miller_Rabin() {
 
 			 X = W + NL;
 			 P = X - (X.bigNumMod(one, NUMS[2] * Q)) + one;
-			 P.unsignedprintBigNumber();
+			 //P.unsignedprintBigNumber();
 			 if (!BigNumber::isBig(NL, P)) {
 				 if (P.Miller_Rabin()) {
 					 flag = 1;
@@ -649,8 +649,8 @@ int BigNumber::Miller_Rabin() {
 		 }
 		 if (flag) break;
 	 }
-	 P.unsignedprintBigNumber();
-	 Q.unsignedprintBigNumber();
+	/* P.unsignedprintBigNumber();
+	 Q.unsignedprintBigNumber();*/
 }
 
  /*随机返回一个n位的随机大整数*/

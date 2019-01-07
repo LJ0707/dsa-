@@ -146,6 +146,20 @@ BigNumber shaBigNumber(BigNumber value) {
 	}
 	BigNumber result(s,2);
 	return result;
+}
 
+/*利用sha算法计算文件的hash值，返回表示hash值的大整数*/
+BigNumber shaFile(std::fstream*file) {
+	uint32_t buffer[5];
+	shaMessage(file,buffer);
+	std::string s;
+	s.resize(160,'0');
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 32; j++) {
+			s[i * 32 + j] = char(((buffer[i] >> (31 - j)) & 0x00000001)) + '0';
+		}
+	}
+	BigNumber result(s, 2);
+	return result;
 }
 

@@ -14,3 +14,6 @@ void shaMessage(std::fstream *file,uint32_t *);
 
 /*利用sha算法计算大整数序列的hash值，返回值为大整数*/
 BigNumber shaBigNumber(BigNumber );
+
+/*利用sha算法计算文件的hash值，返回表示hash值的大整数*/
+BigNumber shaFile(std::fstream*);
